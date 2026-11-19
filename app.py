@@ -174,3 +174,28 @@ if st.button("🔍 Predict Customer Churn", type="primary"):
     else:
         st.success("✅ Customer is likely to Stay!")
         
+        prediction = model.predict(customer_data)[0]
+
+# Calculate churn probability
+churn_probability = model.predict_proba(customer_data)[0][1]
+
+probability_percent = round(
+    churn_probability * 100, 2
+)
+
+st.metric(
+    label="Churn Probability",
+    value=f"{probability_percent}%"
+)
+
+st.progress(churn_probability)        
+# Customer Risk Level
+st.subheader("Customer Risk Level")
+
+if probability_percent <= 30:
+    st.success("🟢 Low Risk")
+elif probability_percent <= 60:
+    st.warning("🟡 Medium Risk")
+else:
+    st.error("🔴 High Risk")
+        
